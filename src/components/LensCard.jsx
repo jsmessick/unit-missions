@@ -3,28 +3,34 @@ import { motion } from 'framer-motion'
 export default function LensCard({ lens, isSelected, onSelect, delay = 0 }) {
   return (
     <motion.button
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ delay: delay * 0.08, type: 'spring', stiffness: 400 }}
-      whileTap={{ scale: 0.95 }}
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: delay * 0.06 }}
+      whileTap={{ scale: 0.97 }}
       onClick={() => onSelect(lens.id)}
       className={`
-        relative p-4 rounded-duo border-2 text-left transition-all
-        ${isSelected ? lens.activeColor : lens.color}
+        w-full flex items-center gap-3.5 p-3.5 rounded-xl text-left transition-all border-2
+        ${isSelected
+          ? 'bg-duo-dark-lighter border-duo-green'
+          : 'bg-duo-dark border-duo-dark-lighter'
+        }
       `}
     >
-      <div className="text-2xl mb-1">{lens.emoji}</div>
-      <div className="font-extrabold text-gray-800 text-sm">{lens.title}</div>
-      <div className="text-xs text-gray-500 font-bold mt-0.5 leading-tight">
-        {lens.description}
+      <span className="text-2xl flex-shrink-0">{lens.emoji}</span>
+      <div className="flex-1 min-w-0">
+        <div className={`font-extrabold text-sm ${isSelected ? 'text-white' : 'text-gray-300'}`}>
+          {lens.title}
+        </div>
+        <div className="text-xs font-bold text-gray-500 leading-tight mt-0.5">
+          {lens.description}
+        </div>
       </div>
-
       {isSelected && (
         <motion.div
           layoutId="lens-check"
-          className="absolute top-2 right-2 w-5 h-5 bg-duo-green rounded-full flex items-center justify-center"
+          className="w-6 h-6 bg-duo-green rounded-full flex items-center justify-center flex-shrink-0"
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
             <path d="M5 13l4 4L19 7" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </motion.div>

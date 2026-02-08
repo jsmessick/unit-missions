@@ -18,6 +18,9 @@ export default {
           gray: '#AFAFAF',
           'gray-light': '#E5E5E5',
           'gray-bg': '#F7F7F7',
+          dark: '#131F24',
+          'dark-card': '#1B2B32',
+          'dark-lighter': '#233A42',
         },
       },
       fontFamily: {

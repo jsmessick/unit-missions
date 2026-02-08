@@ -1,9 +1,8 @@
 import { useState, useCallback } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import PathScreen from './components/PathScreen'
-import MissionBriefing from './components/MissionBriefing'
-import ExerciseComparison from './components/ExerciseComparison'
-import Confirmation from './components/Confirmation'
+import ExerciseScreen from './components/ExerciseScreen'
+import QRCode from './components/QRCode'
 
 const pageVariants = {
   enter: { opacity: 0, x: 50 },
@@ -16,42 +15,21 @@ const pageTransition = {
   ease: 'easeInOut',
 }
 
-// Screens: path → briefing (overlay) → exercise → confirmation
-// "briefing" is an overlay on "path", so we handle it separately
+// Flow: path → exercise screen (compass phase → exercises) → path
 
 export default function App() {
-  const [screen, setScreen] = useState('path') // path | exercise | confirmation
-  const [showBriefing, setShowBriefing] = useState(false)
-  const [selectedLens, setSelectedLens] = useState(null)
+  const [screen, setScreen] = useState('path')
 
-  const handleOpenBriefing = useCallback(() => {
-    setShowBriefing(true)
-  }, [])
-
-  const handleCloseBriefing = useCallback(() => {
-    setShowBriefing(false)
-  }, [])
-
-  const handleStartMission = useCallback((lensId) => {
-    setSelectedLens(lensId)
-    setShowBriefing(false)
+  const handleStartMission = useCallback(() => {
     setScreen('exercise')
   }, [])
 
-  const handleContinue = useCallback(() => {
-    setScreen('confirmation')
+  const handleExerciseComplete = useCallback(() => {
+    setScreen('path')
   }, [])
 
-  const handleLetsGo = useCallback(() => {
-    // In a real app this would start the exercises
-    // For the prototype, loop back to path
+  const handleExerciseExit = useCallback(() => {
     setScreen('path')
-    setSelectedLens(null)
-  }, [])
-
-  const handleReset = useCallback(() => {
-    setScreen('path')
-    setSelectedLens(null)
   }, [])
 
   return (
@@ -66,7 +44,7 @@ export default function App() {
             exit="exit"
             transition={pageTransition}
           >
-            <PathScreen onStartMission={handleOpenBriefing} />
+            <PathScreen onStartMission={handleStartMission} />
           </motion.div>
         )}
 
@@ -79,40 +57,15 @@ export default function App() {
             exit="exit"
             transition={pageTransition}
           >
-            <ExerciseComparison
-              selectedLens={selectedLens}
-              onContinue={handleContinue}
-            />
-          </motion.div>
-        )}
-
-        {screen === 'confirmation' && (
-          <motion.div
-            key="confirmation"
-            variants={pageVariants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={pageTransition}
-          >
-            <Confirmation
-              selectedLens={selectedLens}
-              onStart={handleLetsGo}
-              onReset={handleReset}
+            <ExerciseScreen
+              onComplete={handleExerciseComplete}
+              onExit={handleExerciseExit}
             />
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Mission briefing overlay */}
-      <AnimatePresence>
-        {showBriefing && (
-          <MissionBriefing
-            onClose={handleCloseBriefing}
-            onStartMission={handleStartMission}
-          />
-        )}
-      </AnimatePresence>
+      {/* QR code — desktop only */}
+      <QRCode />
     </div>
   )
 }
