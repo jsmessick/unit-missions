@@ -205,8 +205,11 @@ export default function ExerciseScreen({ onComplete, onExit }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
           >
-            <p className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-3">
-              Choose your mission
+            <p className="text-xs font-extrabold text-gray-500 uppercase tracking-wider mb-1">
+              Pick your focus
+            </p>
+            <p className="text-xs font-bold text-gray-500 mb-3">
+              Commit to 2 focused lessons
             </p>
             <div className="space-y-2.5 mb-5">
               {lenses.map((lens, i) => (

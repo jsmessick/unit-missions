@@ -51,15 +51,38 @@ export default function PathNode({ status, icon = 'star', onClick, delay = 0, ba
       className="relative flex flex-col items-center"
       onClick={isTappable ? onClick : undefined}
     >
-      {/* Purple orbiting ring for mission node */}
+      {/* Lesson indicator arcs on right side of mission node */}
       {isMission && (
         <>
-          <div className="absolute w-[76px] h-[76px] rounded-full border-[3px] border-duo-purple/40" />
-          <div className="absolute w-[76px] h-[76px] orbit-ring">
-            <div className="absolute -top-[4px] left-1/2 -translate-x-1/2 w-[8px] h-[8px] rounded-full bg-duo-purple" />
-            <div className="absolute -bottom-[4px] left-1/2 -translate-x-1/2 w-[6px] h-[6px] rounded-full bg-duo-purple/60" />
-            <div className="absolute top-1/2 -right-[4px] -translate-y-1/2 w-[5px] h-[5px] rounded-full bg-duo-purple/40" />
-          </div>
+          <svg
+            className="absolute pointer-events-none"
+            width="82" height="82"
+            viewBox="0 0 82 82"
+            style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+          >
+            {[0, 1, 2, 3, 4].map((i) => {
+              const cx = 41, cy = 41, r = 37
+              const gapDeg = 18
+              const segDeg = (360 - 5 * gapDeg) / 5
+              const startAngle = -90 + i * (segDeg + gapDeg)
+              const endAngle = startAngle + segDeg
+              const rad = Math.PI / 180
+              const x1 = cx + r * Math.cos(startAngle * rad)
+              const y1 = cy + r * Math.sin(startAngle * rad)
+              const x2 = cx + r * Math.cos(endAngle * rad)
+              const y2 = cy + r * Math.sin(endAngle * rad)
+              const d = `M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`
+              const isSpecial = i < 2
+              return isSpecial ? (
+                <g key={i}>
+                  <path d={d} stroke="#E08600" strokeWidth={7} strokeLinecap="round" fill="none" />
+                  <path d={d} stroke="#1A2E35" strokeWidth={3} strokeLinecap="round" fill="none" />
+                </g>
+              ) : (
+                <path key={i} d={d} stroke="#3C5A64" strokeWidth={5} strokeLinecap="round" fill="none" />
+              )
+            })}
+          </svg>
           <div className="absolute w-[86px] h-[86px] rounded-full bg-duo-purple/20 pulse-ring" />
         </>
       )}
