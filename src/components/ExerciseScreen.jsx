@@ -209,7 +209,7 @@ export default function ExerciseScreen({ onComplete, onExit }) {
               Pick your focus
             </p>
             <p className="text-xs font-bold text-gray-500 mb-3">
-              Commit to 2 focused lessons
+              Commit to 5 focused lessons
             </p>
             <div className="space-y-2.5 mb-5">
               {lenses.map((lens, i) => (

@@ -72,7 +72,7 @@ export default function PathNode({ status, icon = 'star', onClick, delay = 0, ba
               const x2 = cx + r * Math.cos(endAngle * rad)
               const y2 = cy + r * Math.sin(endAngle * rad)
               const d = `M ${x1} ${y1} A ${r} ${r} 0 0 1 ${x2} ${y2}`
-              const isSpecial = i < 2
+              const isSpecial = i < 5
               return isSpecial ? (
                 <g key={i}>
                   <path d={d} stroke="#E08600" strokeWidth={7} strokeLinecap="round" fill="none" />
